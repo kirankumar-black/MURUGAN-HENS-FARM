@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Animal Mart</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="index.html">
+                <i class="bi bi-shop" style="font-size: 1.8rem;"></i>
+                <span>Animal Mart</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-translate="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="animals.html" data-translate="nav-animals">Animals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-translate="nav-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-translate="nav-contact">Contact</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link active" href="cart.html">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <select class="form-select form-select-sm bg-transparent text-color border-secondary rounded-3" id="lang-selector" style="font-size: 0.85rem;">
+                            <option value="en">English</option>
+                            <option value="ta">தமிழ்</option>
+                        </select>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-link text-color" id="theme-toggle-btn" aria-label="Toggle Theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" id="nav-login-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="login.html" data-translate="nav-login">Login</a>
+                    </li>
+                    <li class="nav-item" id="nav-register-link">
+                        <a class="btn btn-primary-custom btn-sm rounded-pill px-3" href="register.html" data-translate="nav-register">Register</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-profile-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="profile.html" data-translate="nav-profile">Dashboard</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-logout-btn">
+                        <a class="btn btn-danger btn-sm rounded-pill px-3" href="#" data-translate="nav-logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Layout -->
+    <div class="container py-5">
+        <h2 class="fw-bold mb-4"><i class="bi bi-cart3 me-2"></i>Shopping Cart</h2>
+
+        <div class="row g-4 d-none" id="cart-content-layout">
+            <!-- Items list -->
+            <div class="col-lg-8">
+                <div class="d-flex flex-column gap-3" id="cart-items-container">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="col-lg-4">
+                <div class="glass-card p-4" style="border: 1px solid var(--border-color); border-radius: 20px; position: sticky; top: 100px;">
+                    <h5 class="fw-bold mb-3">Order Summary</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Total Items</span>
+                        <span class="fw-semibold" id="summary-qty">0</span>
+                    </div>
+                    <hr class="my-3 border-secondary">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="fw-semibold">Total Amount</span>
+                        <span class="fs-4 fw-bold text-primary" id="summary-total">₹0.00</span>
+                    </div>
+                    <button onclick="proceedToCheckout()" class="btn btn-primary-custom w-100 py-3 rounded-3 fw-bold">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty Cart message -->
+        <div class="text-center py-5 d-none" id="cart-empty-layout">
+            <i class="bi bi-cart-x display-1 text-muted mb-3"></i>
+            <h4 class="text-muted">Your cart is empty.</h4>
+            <p class="text-muted">Browse our active listings and find your preferred livestock or pet.</p>
+            <a href="animals.html" class="btn btn-primary-custom px-4 py-2 rounded-pill mt-2">Browse Animals</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core App JS Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/chatbot.js"></script>
+
+    <!-- Cart Rendering Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCartItems();
+        });
+
+        // Listen for local cart removal updates
+        window.addEventListener('cartUpdated', () => {
+            loadCartItems();
+        });
+
+        async function loadCartItems() {
+            const ids = getCart();
+            const emptyLayout = document.getElementById("cart-empty-layout");
+            const contentLayout = document.getElementById("cart-content-layout");
+            
+            if (ids.length === 0) {
+                contentLayout.classList.add("d-none");
+                emptyLayout.classList.remove("d-none");
+                return;
+            }
+
+            const itemsContainer = document.getElementById("cart-items-container");
+            itemsContainer.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Syncing cart items...</span>
+                    </div>
+                </div>
+            `;
+
+            // Sync with backend API
+            const res = await apiFetch("cart.php", {
+                method: "POST",
+                body: JSON.stringify({ ids: ids })
+            });
+
+            if (res.status === "success") {
+                itemsContainer.innerHTML = "";
+                let totalSum = 0;
+
+                res.items.forEach(item => {
+                    const imgPath = item.main_image.startsWith("animal_") ? `../backend/uploads/${item.main_image}` : `https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=400`;
+                    totalSum += parseFloat(item.price);
+
+                    const card = document.createElement("div");
+                    card.className = "glass-card p-3 d-flex flex-column flex-sm-row align-items-center gap-3";
+                    card.style.border = "1px solid var(--border-color)";
+                    card.style.borderRadius = "16px";
+                    card.innerHTML = `
+                        <img src="${imgPath}" alt="${item.name}" class="rounded-3" style="width: 120px; height: 120px; object-fit: cover;">
+                        <div class="flex-grow-1 text-center text-sm-start">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-2">
+                                <h5 class="fw-bold m-0">${item.name}</h5>
+                                <span class="fs-5 fw-bold text-primary">${formatPrice(item.price)}</span>
+                            </div>
+                            <p class="text-muted m-0 mb-1" style="font-size: 0.9rem;">Breed: <strong>${item.breed}</strong> | Location: <strong>${item.location}</strong></p>
+                            <span class="badge ${item.status === 'available' ? 'bg-success' : 'bg-danger'}">${item.status.toUpperCase()}</span>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="btn btn-outline-danger btn-sm p-2 rounded-circle" style="width: 38px; height: 38px;"><i class="bi bi-trash"></i></button>
+                    `;
+                    itemsContainer.appendChild(card);
+                });
+
+                // Set order summary
+                document.getElementById("summary-qty").innerText = res.items.length;
+                document.getElementById("summary-total").innerText = formatPrice(totalSum);
+
+                emptyLayout.classList.add("d-none");
+                contentLayout.classList.remove("d-none");
+            } else {
+                itemsContainer.innerHTML = `<div class="text-danger">Failed to sync cart details.</div>`;
+            }
+        }
+
+        function proceedToCheckout() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                showToast("Please login to proceed to checkout.", "error");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1000);
+            } else {
+                window.location.href = "checkout.html";
+            }
+        }
+    </script>
+</body>
+</html>

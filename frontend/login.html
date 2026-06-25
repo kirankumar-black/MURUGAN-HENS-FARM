@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Animal Mart</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="index.html">
+                <i class="bi bi-shop" style="font-size: 1.8rem;"></i>
+                <span>Animal Mart</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-translate="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="animals.html" data-translate="nav-animals">Animals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-translate="nav-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-translate="nav-contact">Contact</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <select class="form-select form-select-sm bg-transparent text-color border-secondary rounded-3" id="lang-selector" style="font-size: 0.85rem;">
+                            <option value="en">English</option>
+                            <option value="ta">தமிழ்</option>
+                        </select>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-link text-color" id="theme-toggle-btn" aria-label="Toggle Theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Box -->
+    <div class="container py-5 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="glass-card p-5" style="border: 1px solid var(--border-color); border-radius: 24px;">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-circle text-primary display-4 mb-2 d-block"></i>
+                        <h2 class="fw-bold">Welcome Back</h2>
+                        <p class="text-muted">Enter credentials to access your account</p>
+                    </div>
+
+                    <form id="login-form" onsubmit="handleLogin(event)">
+                        <!-- Admin Login toggle checkbox -->
+                        <div class="form-check form-switch mb-3 justify-content-end d-flex">
+                            <input class="form-check-input" type="checkbox" id="admin-switch" onchange="toggleAdminLogin()">
+                            <label class="form-check-label ms-2 text-muted" style="font-size: 0.9rem;" for="admin-switch">Admin Portal</label>
+                        </div>
+
+                        <!-- Email/Username Input -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" id="login-identifier-label">Email Address</label>
+                            <input type="text" id="login-identifier" class="form-control bg-transparent border-secondary py-2 text-color" placeholder="email@example.com" required>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label fw-semibold">Password</label>
+                            </div>
+                            <input type="password" id="login-password" class="form-control bg-transparent border-secondary py-2 text-color" placeholder="••••••••" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2.5 rounded-3 fw-semibold">Sign In</button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted m-0">Don't have an account? <a href="register.html" class="text-primary text-decoration-none fw-semibold">Register Now</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core App JS Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/chatbot.js"></script>
+
+    <!-- Login Handler Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                if (user.role === 'admin') {
+                    window.location.href = "../backend/admin/dashboard.html";
+                } else {
+                    window.location.href = "profile.html";
+                }
+            }
+        });
+
+        function toggleAdminLogin() {
+            const isChecked = document.getElementById("admin-switch").checked;
+            const label = document.getElementById("login-identifier-label");
+            const input = document.getElementById("login-identifier");
+
+            if (isChecked) {
+                label.innerText = "Username";
+                input.placeholder = "admin";
+                input.type = "text";
+            } else {
+                label.innerText = "Email Address";
+                input.placeholder = "email@example.com";
+                input.type = "email";
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const identifier = document.getElementById("login-identifier").value;
+            const password = document.getElementById("login-password").value;
+            const isAdmin = document.getElementById("admin-switch").checked;
+
+            const payload = {};
+            if (isAdmin) {
+                payload.username = identifier;
+            } else {
+                payload.email = identifier;
+            }
+            payload.password = password;
+
+            const res = await apiFetch("login.php", {
+                method: "POST",
+                body: JSON.stringify(payload)
+            });
+
+            if (res.status === "success") {
+                showToast("Login successful!", "success");
+                
+                // Store JWT token and user info
+                localStorage.setItem("token", res.token);
+                
+                if (isAdmin) {
+                    localStorage.setItem("user", JSON.stringify({ role: "admin", name: "Administrator" }));
+                    setTimeout(() => {
+                        window.location.href = "../backend/admin/dashboard.html";
+                    }, 1000);
+                } else {
+                    localStorage.setItem("user", JSON.stringify(res.user));
+                    setTimeout(() => {
+                        window.location.href = "profile.html";
+                    }, 1000);
+                }
+            } else {
+                showToast(res.message, "error");
+            }
+        }
+    </script>
+</body>
+</html>

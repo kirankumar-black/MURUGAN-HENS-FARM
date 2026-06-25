@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Animals - Animal Mart</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="index.html">
+                <i class="bi bi-shop" style="font-size: 1.8rem;"></i>
+                <span>Animal Mart</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-translate="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="animals.html" data-translate="nav-animals">Animals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-translate="nav-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-translate="nav-contact">Contact</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <select class="form-select form-select-sm bg-transparent text-color border-secondary rounded-3" id="lang-selector" style="font-size: 0.85rem;">
+                            <option value="en">English</option>
+                            <option value="ta">தமிழ்</option>
+                        </select>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-link text-color" id="theme-toggle-btn" aria-label="Toggle Theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" id="nav-login-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="login.html" data-translate="nav-login">Login</a>
+                    </li>
+                    <li class="nav-item" id="nav-register-link">
+                        <a class="btn btn-primary-custom btn-sm rounded-pill px-3" href="register.html" data-translate="nav-register">Register</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-profile-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="profile.html" data-translate="nav-profile">Dashboard</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-logout-btn">
+                        <a class="btn btn-danger btn-sm rounded-pill px-3" href="#" data-translate="nav-logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container py-5">
+        <div class="row g-4">
+            
+            <!-- Filters Sidebar -->
+            <div class="col-lg-3">
+                <div class="glass-card p-4 sticky-lg-top" style="top: 100px; border: 1px solid var(--border-color); border-radius: 20px;">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h5 class="fw-bold m-0"><i class="bi bi-funnel me-2"></i> Filters</h5>
+                        <button onclick="resetFilters()" class="btn btn-link btn-sm text-decoration-none text-primary p-0">Reset All</button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" style="font-size: 0.9rem;">Search Keyword</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-end-0 border-secondary"><i class="bi bi-search text-muted"></i></span>
+                            <input type="text" id="filter-search" class="form-control border-start-0 border-secondary bg-transparent" placeholder="e.g. Gir, Cow...">
+                        </div>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" style="font-size: 0.9rem;">Category</label>
+                        <select id="filter-category" class="form-select border-secondary bg-transparent text-color">
+                            <option value="">All Categories</option>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" style="font-size: 0.9rem;">Price Range</label>
+                        <div class="d-flex gap-2">
+                            <input type="number" id="filter-price-min" class="form-control border-secondary bg-transparent" placeholder="Min" min="0">
+                            <input type="number" id="filter-price-max" class="form-control border-secondary bg-transparent" placeholder="Max" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Breed Filter -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" style="font-size: 0.9rem;">Breed</label>
+                        <input type="text" id="filter-breed" class="form-control border-secondary bg-transparent" placeholder="e.g. Sahiwal">
+                    </div>
+
+                    <!-- Location Filter -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" style="font-size: 0.9rem;">Location</label>
+                        <input type="text" id="filter-location" class="form-control border-secondary bg-transparent" placeholder="e.g. Chennai">
+                    </div>
+
+                    <!-- Age Limit -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" style="font-size: 0.9rem;">Max Age (Months)</label>
+                        <input type="number" id="filter-age-max" class="form-control border-secondary bg-transparent" placeholder="e.g. 24" min="1">
+                    </div>
+
+                    <button onclick="applyFilters()" class="btn btn-primary-custom w-100 py-2 rounded-3">Apply Filters</button>
+                </div>
+            </div>
+
+            <!-- Animals Grid Section -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-bold m-0" id="results-count-title">Browse Available Listings</h3>
+                    <small class="text-muted" id="results-meta">Loading animals...</small>
+                </div>
+
+                <div class="row g-4" id="animals-grid">
+                    <!-- Skeleton loaders -->
+                    <div class="col-md-4">
+                        <div class="glass-card skeleton-img skeleton"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card skeleton-img skeleton"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card skeleton-img skeleton"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core App JS Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/chatbot.js"></script>
+
+    <!-- Page Specific Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Load filters from URL params if any
+            const params = new URLSearchParams(window.location.search);
+            if (params.has("search")) document.getElementById("filter-search").value = params.get("search");
+            
+            // Fetch categories for filter dropdown
+            await loadCategoriesDropdown(params.get("category"));
+
+            // Fetch and render animals
+            await fetchAnimals();
+        });
+
+        async function loadCategoriesDropdown(selectedId) {
+            const select = document.getElementById("filter-category");
+            const data = await apiFetch("categories.php");
+            
+            if (data.status === "success") {
+                data.categories.forEach(cat => {
+                    const opt = document.createElement("option");
+                    opt.value = cat.id;
+                    opt.innerText = cat.name;
+                    if (selectedId && cat.id == selectedId) {
+                        opt.selected = true;
+                    }
+                    select.appendChild(opt);
+                });
+            }
+        }
+
+        async function fetchAnimals() {
+            const grid = document.getElementById("animals-grid");
+            const meta = document.getElementById("results-meta");
+            
+            // Build query params
+            const query = {};
+            const search = document.getElementById("filter-search").value;
+            const category = document.getElementById("filter-category").value;
+            const priceMin = document.getElementById("filter-price-min").value;
+            const priceMax = document.getElementById("filter-price-max").value;
+            const breed = document.getElementById("filter-breed").value;
+            const location = document.getElementById("filter-location").value;
+            const ageMax = document.getElementById("filter-age-max").value;
+
+            if (search) query.search = search;
+            if (category) query.category = category;
+            if (priceMin) query.price_min = priceMin;
+            if (priceMax) query.price_max = priceMax;
+            if (breed) query.breed = breed;
+            if (location) query.location = location;
+            if (ageMax) query.age_max = ageMax;
+
+            // Convert query object to query string
+            const queryString = new URLSearchParams(query).toString();
+
+            // Fetch data
+            const data = await apiFetch(`animals.php?${queryString}`);
+            grid.innerHTML = "";
+
+            if (data.status === "success") {
+                const count = data.animals.length;
+                meta.innerText = `${count} animals found`;
+                
+                if (count === 0) {
+                    grid.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <i class="bi bi-emoji-frown display-4 text-muted mb-3"></i>
+                            <h5 class="text-muted">No animals match your selected filters.</h5>
+                            <button onclick="resetFilters()" class="btn btn-outline-primary btn-sm mt-2 rounded-pill">Reset Filters</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                data.animals.forEach(animal => {
+                    const ratingStars = Array(5).fill(0).map((_, i) => 
+                        i < Math.round(animal.rating) ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-muted"></i>'
+                    ).join('');
+
+                    const imgPath = animal.main_image.startsWith("animal_") ? `../backend/uploads/${animal.main_image}` : `https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=400`;
+
+                    const col = document.createElement("div");
+                    col.className = "col-md-6 col-lg-4";
+                    col.innerHTML = `
+                        <div class="glass-card animal-card h-100" style="border: 1px solid var(--border-color);">
+                            <div class="animal-image-wrapper">
+                                <img src="${imgPath}" alt="${animal.name}">
+                                <span class="animal-badge bg-primary text-white">${animal.category_name}</span>
+                                <button class="wishlist-btn" onclick="event.preventDefault(); toggleFav(${animal.id})">
+                                    <i class="bi bi-heart-fill"></i>
+                                </button>
+                            </div>
+                            <div class="p-4 d-flex flex-column justify-content-between" style="min-height: 220px;">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="fw-bold m-0">${animal.name}</h5>
+                                        <span class="fs-5 fw-bold text-primary">${formatPrice(animal.price)}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <div style="font-size: 0.85rem;">${ratingStars}</div>
+                                        <small class="text-muted">(${parseFloat(animal.rating).toFixed(1)})</small>
+                                    </div>
+                                    <div class="row g-2 mb-3" style="font-size: 0.9rem;">
+                                        <div class="col-6 text-muted"><i class="bi bi-tag-fill me-1 text-primary"></i> ${animal.breed}</div>
+                                        <div class="col-6 text-muted"><i class="bi bi-geo-alt-fill me-1 text-primary"></i> ${animal.location}</div>
+                                        <div class="col-6 text-muted"><i class="bi bi-calendar3 me-1 text-primary"></i> ${animal.age_months} Mos</div>
+                                        <div class="col-6 text-muted"><i class="bi bi-speedometer2 me-1 text-primary"></i> ${animal.weight_kg} Kg</div>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <a href="animal-details.html?id=${animal.id}" class="btn btn-outline-primary btn-sm w-100 rounded-3">Details</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <button onclick="addToCart(${animal.id})" class="btn btn-primary-custom btn-sm w-100 rounded-3">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(col);
+                });
+            } else {
+                meta.innerText = "Error loading animals";
+                grid.innerHTML = `<div class="text-danger text-center w-100">Failed to fetch animals.</div>`;
+            }
+        }
+
+        function applyFilters() {
+            fetchAnimals();
+        }
+
+        function resetFilters() {
+            document.getElementById("filter-search").value = "";
+            document.getElementById("filter-category").value = "";
+            document.getElementById("filter-price-min").value = "";
+            document.getElementById("filter-price-max").value = "";
+            document.getElementById("filter-breed").value = "";
+            document.getElementById("filter-location").value = "";
+            document.getElementById("filter-age-max").value = "";
+            fetchAnimals();
+        }
+
+        async function toggleFav(animalId) {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                showToast("Please login to manage wishlist.", "error");
+                return;
+            }
+            const res = await apiFetch("wishlist.php", {
+                method: "POST",
+                body: JSON.stringify({ animal_id: animalId })
+            });
+            if (res.status === "added") {
+                showToast("Added to wishlist!", "success");
+            } else if (res.status === "removed") {
+                showToast("Removed from wishlist.", "success");
+            }
+        }
+    </script>
+</body>
+</html>

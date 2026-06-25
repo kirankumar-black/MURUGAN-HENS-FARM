@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Admin | Animal Mart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <a class="sidebar-brand" href="dashboard.html">
+            <i class="bi bi-shop-window" style="font-size:1.8rem; color:#818cf8;"></i>
+            <h5>Animal Mart</h5>
+        </a>
+        <div class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <a class="sidebar-link" href="dashboard.html"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+            <a class="sidebar-link" href="animals.html"><i class="bi bi-basket3-fill"></i> Animals</a>
+            <a class="sidebar-link" href="orders.html"><i class="bi bi-bag-check-fill"></i> Orders</a>
+            <div class="nav-section-label">Users</div>
+            <a class="sidebar-link active" href="users.html"><i class="bi bi-people-fill"></i> Users</a>
+            <a class="sidebar-link" href="reviews.html"><i class="bi bi-chat-square-text-fill"></i> Reviews</a>
+            <div class="nav-section-label">System</div>
+            <a class="sidebar-link" href="../../frontend/index.html" target="_blank"><i class="bi bi-globe2"></i> View Site</a>
+            <a class="sidebar-link" href="#" onclick="adminLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+        <div class="admin-header">
+            <h4><i class="bi bi-people-fill me-2 text-primary"></i>User Management</h4>
+            <input type="text" class="admin-search" id="search-users" placeholder="Search users..." oninput="filterUsers()">
+        </div>
+
+        <div class="admin-content">
+            <div class="admin-table-wrap">
+                <div class="admin-table-header">
+                    <h5>All Registered Users (<span id="users-count">0</span>)</h5>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-tbody">
+                            <tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8;">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        let allUsers = [];
+
+        document.addEventListener('DOMContentLoaded', loadUsers);
+
+        async function loadUsers() {
+            const res = await adminFetch('admin.php?action=users');
+            if (res && res.status === 'success') {
+                allUsers = res.users;
+                document.getElementById('users-count').innerText = allUsers.length;
+                renderUsersTable(allUsers);
+            }
+        }
+
+        function renderUsersTable(users) {
+            const tbody = document.getElementById('users-tbody');
+            tbody.innerHTML = '';
+            if (users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8;">No users found.</td></tr>`;
+                return;
+            }
+            users.forEach(u => {
+                const isBanned = u.status === 'banned';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${u.id}</td>
+                    <td><strong>${u.name}</strong></td>
+                    <td>${u.email}</td>
+                    <td>${u.phone}</td>
+                    <td><span class="badge-pill" style="background:#e0e7ff;color:#3730a3;">${u.role.toUpperCase()}</span></td>
+                    <td><span class="badge-pill badge-${u.status}">${u.status.toUpperCase()}</span></td>
+                    <td>${new Date(u.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn-action ${isBanned ? 'btn-unban' : 'btn-ban'}"
+                            onclick="toggleUserStatus(${u.id}, '${isBanned ? 'active' : 'banned'}')">
+                            <i class="bi bi-${isBanned ? 'person-check' : 'person-x'}"></i>
+                            ${isBanned ? 'Unban' : 'Ban'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function toggleUserStatus(id, newStatus) {
+            const label = newStatus === 'banned' ? 'ban' : 'unban';
+            if (!confirm(`Are you sure you want to ${label} this user?`)) return;
+            const res = await adminFetch('admin.php', {
+                method: 'POST',
+                body: JSON.stringify({ action: 'update_user_status', user_id: id, status: newStatus })
+            });
+            if (res && res.status === 'success') {
+                adminToast(`User ${label}ned successfully.`, 'success');
+                loadUsers();
+            } else {
+                adminToast(res?.message || 'Failed to update user status.', 'error');
+            }
+        }
+
+        function filterUsers() {
+            const q = document.getElementById('search-users').value.toLowerCase();
+            const filtered = allUsers.filter(u =>
+                u.name.toLowerCase().includes(q) ||
+                u.email.toLowerCase().includes(q) ||
+                u.phone.includes(q)
+            );
+            renderUsersTable(filtered);
+        }
+
+        function adminLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '../../frontend/login.html';
+        }
+    </script>
+</body>
+</html>

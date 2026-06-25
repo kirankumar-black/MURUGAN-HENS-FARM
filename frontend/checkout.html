@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Animal Mart</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- html2pdf.js for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5IfS51RR1PLh6UAeJY5MB12x+/hyUPM7OkydNxgOXSfPh8971HsGtADLKvyWu/KAl4cSEkeyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="index.html">
+                <i class="bi bi-shop" style="font-size: 1.8rem;"></i>
+                <span>Animal Mart</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container py-5">
+        
+        <!-- Step 1: Checkout Form -->
+        <div class="row g-5" id="checkout-form-step">
+            <!-- Left Side: Details -->
+            <div class="col-lg-7">
+                <div class="glass-card p-5" style="border: 1px solid var(--border-color); border-radius: 20px;">
+                    <h4 class="fw-bold mb-4"><i class="bi bi-truck me-2"></i>Shipping & Contact Details</h4>
+                    <form id="checkout-info-form" onsubmit="submitCheckout(event)">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Recipient Name</label>
+                            <input type="text" id="chk-name" class="form-control bg-transparent border-secondary text-color" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Phone Number</label>
+                            <input type="text" id="chk-phone" class="form-control bg-transparent border-secondary text-color" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Delivery Address / Farm Location</label>
+                            <textarea id="chk-address" class="form-control bg-transparent border-secondary text-color" rows="4" required></textarea>
+                        </div>
+
+                        <h4 class="fw-bold mb-3 mt-5"><i class="bi bi-credit-card me-2"></i>Payment Method</h4>
+                        <div class="d-flex flex-column gap-3 mb-4">
+                            <div class="form-check glass-card p-3 d-flex align-items-center gap-2" style="border: 1px solid var(--border-color); border-radius: 12px;">
+                                <input class="form-check-input ms-1" type="radio" name="payment_method" id="pay-card" value="Credit Card" checked>
+                                <label class="form-check-label fw-semibold text-color ms-2" for="pay-card">
+                                    <i class="bi bi-credit-card-2-front text-primary me-2"></i>Credit / Debit Card
+                                </label>
+                            </div>
+                            <div class="form-check glass-card p-3 d-flex align-items-center gap-2" style="border: 1px solid var(--border-color); border-radius: 12px;">
+                                <input class="form-check-input ms-1" type="radio" name="payment_method" id="pay-paypal" value="PayPal">
+                                <label class="form-check-label fw-semibold text-color ms-2" for="pay-paypal">
+                                    <i class="bi bi-paypal text-primary me-2"></i>PayPal Express Wallet
+                                </label>
+                            </div>
+                            <div class="form-check glass-card p-3 d-flex align-items-center gap-2" style="border: 1px solid var(--border-color); border-radius: 12px;">
+                                <input class="form-check-input ms-1" type="radio" name="payment_method" id="pay-cod" value="COD / Bank Transfer">
+                                <label class="form-check-label fw-semibold text-color ms-2" for="pay-cod">
+                                    <i class="bi bi-wallet2 text-primary me-2"></i>Cash on Delivery (COD) / Bank Transfer
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Card Details sandbox wrapper -->
+                        <div id="card-details-sandbox" class="glass-card p-4 mb-4" style="border: 1px solid var(--border-color); border-radius: 12px;">
+                            <h6 class="fw-bold mb-3">Sandbox Card Processing</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control bg-transparent border-secondary text-color" placeholder="4111 2222 3333 4444" value="4111 2222 3333 4444" disabled>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input type="text" class="form-control bg-transparent border-secondary text-color" placeholder="12/28" value="12/28" disabled>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">CVV</label>
+                                    <input type="password" class="form-control bg-transparent border-secondary text-color" placeholder="123" value="123" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-3 rounded-3 fw-bold">Complete Payment & Place Order</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side: Order Summary -->
+            <div class="col-lg-5">
+                <div class="glass-card p-4 sticky-lg-top" style="top: 100px; border: 1px solid var(--border-color); border-radius: 20px;">
+                    <h5 class="fw-bold mb-4">Checkout Items</h5>
+                    <div class="d-flex flex-column gap-3 mb-4" id="checkout-items-summary">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    <hr class="my-3 border-secondary">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-semibold">Grand Total</span>
+                        <span class="fs-4 fw-bold text-primary" id="checkout-grand-total">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Payment Processing screen -->
+        <div class="text-center py-5 d-none" id="checkout-processing-step">
+            <div class="spinner-grow text-primary mb-4" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h4 class="fw-bold">Processing Secure Payment...</h4>
+            <p class="text-muted">Please do not refresh or close this browser window.</p>
+        </div>
+
+        <!-- Step 3: Success & Invoice Card -->
+        <div class="row justify-content-center d-none" id="checkout-success-step">
+            <div class="col-lg-8">
+                <div class="text-center mb-5">
+                    <i class="bi bi-check-circle-fill text-success display-1 mb-3"></i>
+                    <h2 class="fw-bold">Thank You For Your Purchase!</h2>
+                    <p class="text-muted">Your payment transaction was successful. You can find your order receipt below.</p>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <button onclick="downloadInvoicePDF()" class="btn btn-primary-custom rounded-pill px-4"><i class="bi bi-file-pdf me-2"></i>Download PDF</button>
+                        <a href="profile.html" class="btn btn-outline-primary rounded-pill px-4"><i class="bi-person-badge me-2"></i>Track Order</a>
+                    </div>
+                </div>
+
+                <!-- Invoice display card -->
+                <div class="glass-card p-5 print-invoice-area" id="invoice-card" style="border: 1px solid var(--border-color); border-radius: 24px; background: #ffffff; color: #1e293b;">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <div>
+                            <h3 class="fw-bold text-primary m-0"><i class="bi bi-shop me-2"></i>Animal Mart</h3>
+                            <small class="text-muted">Premium Animal Marketplace</small>
+                        </div>
+                        <div class="text-end">
+                            <h5 class="fw-bold m-0 text-uppercase">Tax Invoice</h5>
+                            <small class="text-muted" id="invoice-num">Order #12345</small>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-6">
+                            <h6 class="fw-bold text-muted text-uppercase mb-2">Billed To:</h6>
+                            <p class="m-0" id="invoice-buyer-name"><strong>Kiran Kumar</strong></p>
+                            <p class="m-0" id="invoice-buyer-phone">9876543210</p>
+                            <p class="m-0 text-muted" id="invoice-buyer-address" style="font-size: 0.9rem;">Chennai, Tamil Nadu</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <h6 class="fw-bold text-muted text-uppercase mb-2">Invoice Info:</h6>
+                            <p class="m-0">Date: <strong id="invoice-date">22/06/2026</strong></p>
+                            <p class="m-0">Txn: <strong id="invoice-txn">TXN_98765</strong></p>
+                            <p class="m-0">Gateway: <strong id="invoice-method">Credit Card</strong></p>
+                        </div>
+                    </div>
+
+                    <table class="table mb-5">
+                        <thead>
+                            <tr class="table-light">
+                                <th scope="col">Description</th>
+                                <th scope="col">Breed</th>
+                                <th scope="col" class="text-end">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoice-items-body">
+                            <!-- Items populated dynamically -->
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="text-end" style="width: 250px;">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal</span>
+                                <strong id="invoice-subtotal">₹0.00</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Tax / Service (0%)</span>
+                                <strong>₹0.00</strong>
+                            </div>
+                            <hr class="my-2">
+                            <div class="d-flex justify-content-between fs-5 fw-bold text-primary">
+                                <span>Grand Total</span>
+                                <span id="invoice-grand-total">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-5 border-secondary">
+                    <div class="text-center text-muted" style="font-size: 0.85rem;">
+                        <p class="m-0">This is a system generated computer invoice. Thank you for shopping with Animal Mart!</p>
+                        <p class="m-0">For support, email us at support@animalmart.com or call +91 98765 43210</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core App JS Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+
+    <!-- Checkout Handler Script -->
+    <script>
+        let checkoutTotal = 0;
+        let checkoutAnimalIds = [];
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Fill shipping details from current user info
+            const user = JSON.parse(localStorage.getItem("user") || "{}");
+            document.getElementById("chk-name").value = user.name || "";
+            document.getElementById("chk-phone").value = user.phone || "";
+            document.getElementById("chk-address").value = user.address || "";
+
+            // Sync checkout items
+            await loadCheckoutSummary();
+        });
+
+        async function loadCheckoutSummary() {
+            checkoutAnimalIds = getCart();
+            if (checkoutAnimalIds.length === 0) {
+                window.location.href = "cart.html";
+                return;
+            }
+
+            const container = document.getElementById("checkout-items-summary");
+            container.innerHTML = `
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading checkout...</span>
+                </div>
+            `;
+
+            const res = await apiFetch("cart.php", {
+                method: "POST",
+                body: JSON.stringify({ ids: checkoutAnimalIds })
+            });
+
+            if (res.status === "success") {
+                container.innerHTML = "";
+                checkoutTotal = 0;
+
+                res.items.forEach(item => {
+                    checkoutTotal += parseFloat(item.price);
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = "d-flex justify-content-between align-items-center";
+                    itemDiv.innerHTML = `
+                        <div>
+                            <span class="fw-semibold">${item.name}</span>
+                            <br>
+                            <small class="text-muted">${item.breed} | ${item.location}</small>
+                        </div>
+                        <span class="fw-bold">${formatPrice(item.price)}</span>
+                    `;
+                    container.appendChild(itemDiv);
+                });
+
+                document.getElementById("checkout-grand-total").innerText = formatPrice(checkoutTotal);
+            }
+        }
+
+        async function submitCheckout(e) {
+            e.preventDefault();
+            const address = document.getElementById("chk-address").value;
+            const methodEls = document.getElementsByName("payment_method");
+            let method = "Credit Card";
+            
+            for (let el of methodEls) {
+                if (el.checked) {
+                    method = el.value;
+                    break;
+                }
+            }
+
+            // Show processing screen
+            document.getElementById("checkout-form-step").classList.add("d-none");
+            document.getElementById("checkout-processing-step").classList.remove("d-none");
+
+            // Execute API Order request
+            const res = await apiFetch("order.php", {
+                method: "POST",
+                body: JSON.stringify({
+                    shipping_address: address,
+                    payment_method: method,
+                    animal_ids: checkoutAnimalIds
+                })
+            });
+
+            // Simulate slight delay for professional sandbox look
+            setTimeout(() => {
+                document.getElementById("checkout-processing-step").classList.add("d-none");
+                
+                if (res.status === "success") {
+                    // Populate Invoice Card
+                    document.getElementById("invoice-num").innerText = `Order #${res.order_id}`;
+                    document.getElementById("invoice-txn").innerText = res.transaction_id;
+                    document.getElementById("invoice-method").innerText = method;
+                    
+                    const buyer = JSON.parse(localStorage.getItem("user") || "{}");
+                    document.getElementById("invoice-buyer-name").innerText = buyer.name;
+                    document.getElementById("invoice-buyer-phone").innerText = buyer.phone;
+                    document.getElementById("invoice-buyer-address").innerText = address;
+                    
+                    document.getElementById("invoice-date").innerText = new Date().toLocaleDateString();
+
+                    // Load items to invoice table
+                    const tbody = document.getElementById("invoice-items-body");
+                    tbody.innerHTML = "";
+                    
+                    const itemsSummaryChildren = document.getElementById("checkout-items-summary").children;
+                    let i = 0;
+                    
+                    // Fetch cart details again to populate invoice table rows
+                    checkoutAnimalIds.forEach((id, index) => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                            <td>Item #${index + 1}</td>
+                            <td>Listing ID ${id}</td>
+                            <td class="text-end">${formatPrice(checkoutTotal / checkoutAnimalIds.length)}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                    document.getElementById("invoice-subtotal").innerText = formatPrice(checkoutTotal);
+                    document.getElementById("invoice-grand-total").innerText = formatPrice(checkoutTotal);
+
+                    // Clear cart
+                    clearCart();
+
+                    document.getElementById("checkout-success-step").classList.remove("d-none");
+                } else {
+                    document.getElementById("checkout-form-step").classList.remove("d-none");
+                    showToast(res.message || "Failed to place order.", "error");
+                }
+            }, 2000);
+        }
+
+        function downloadInvoicePDF() {
+            const element = document.getElementById('invoice-card');
+            
+            // Set styles temporarily for PDF formatting
+            element.style.boxShadow = "none";
+            element.style.border = "none";
+
+            var opt = {
+                margin:       0.3,
+                filename:     `animal_mart_invoice_${Date.now()}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Run HTML to PDF conversion
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.boxShadow = "var(--glass-shadow)";
+                element.style.border = "1px solid var(--border-color)";
+            });
+        }
+    </script>
+</body>
+</html>

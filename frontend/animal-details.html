@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Details - Animal Mart</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="index.html">
+                <i class="bi bi-shop" style="font-size: 1.8rem;"></i>
+                <span>Animal Mart</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-translate="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="animals.html" data-translate="nav-animals">Animals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-translate="nav-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-translate="nav-contact">Contact</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <select class="form-select form-select-sm bg-transparent text-color border-secondary rounded-3" id="lang-selector" style="font-size: 0.85rem;">
+                            <option value="en">English</option>
+                            <option value="ta">தமிழ்</option>
+                        </select>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-link text-color" id="theme-toggle-btn" aria-label="Toggle Theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" id="nav-login-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="login.html" data-translate="nav-login">Login</a>
+                    </li>
+                    <li class="nav-item" id="nav-register-link">
+                        <a class="btn btn-primary-custom btn-sm rounded-pill px-3" href="register.html" data-translate="nav-register">Register</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-profile-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="profile.html" data-translate="nav-profile">Dashboard</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-logout-btn">
+                        <a class="btn btn-danger btn-sm rounded-pill px-3" href="#" data-translate="nav-logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container py-5" id="details-loading">
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading animal details...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5 d-none" id="details-content">
+        <div class="row g-5">
+            
+            <!-- Left Column: Images Carousel -->
+            <div class="col-lg-6">
+                <div class="glass-card p-2 overflow-hidden mb-4" style="border-radius: 20px;">
+                    <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner rounded-4" id="carousel-images-inner">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Google Map Integration using Leaflet -->
+                <div class="glass-card p-4" style="border: 1px solid var(--border-color); border-radius: 20px;">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-geo-alt-fill text-danger me-2"></i>Listed Location Map</h5>
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <!-- Right Column: Detail Badges & Purchase -->
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-primary px-3 py-2 rounded-pill" id="detail-category-badge">Category</span>
+                    <span class="badge bg-success px-3 py-2 rounded-pill" id="detail-status-badge">Available</span>
+                </div>
+
+                <h1 class="display-5 fw-bold mb-2" id="detail-name">Animal Name</h1>
+                <h2 class="display-6 fw-extrabold text-primary mb-4" id="detail-price">₹0.00</h2>
+
+                <div class="glass-card p-4 mb-4" style="border: 1px solid var(--border-color); border-radius: 20px;">
+                    <h5 class="fw-bold mb-3">Specifications</h5>
+                    <div class="details-badge-grid">
+                        <div class="detail-badge-item">
+                            <span class="detail-badge-label" data-translate="breed">Breed</span>
+                            <span class="detail-badge-value" id="badge-breed">-</span>
+                        </div>
+                        <div class="detail-badge-item">
+                            <span class="detail-badge-label" data-translate="location">Location</span>
+                            <span class="detail-badge-value" id="badge-location">-</span>
+                        </div>
+                        <div class="detail-badge-item">
+                            <span class="detail-badge-label" data-translate="age">Age</span>
+                            <span class="detail-badge-value" id="badge-age">-</span>
+                        </div>
+                        <div class="detail-badge-item">
+                            <span class="detail-badge-label" data-translate="weight">Weight</span>
+                            <span class="detail-badge-value" id="badge-weight">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-2">Description</h5>
+                    <p class="text-muted" id="detail-description">No description provided.</p>
+                </div>
+
+                <!-- Purchase Options -->
+                <div class="row g-2 mb-5">
+                    <div class="col-sm-4">
+                        <button id="add-to-cart-btn" class="btn btn-outline-primary w-100 py-3 rounded-3 fw-bold"><i class="bi-cart3 me-2"></i>Add to Cart</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <button id="buy-now-btn" class="btn btn-primary-custom w-100 py-3 rounded-3 fw-bold"><i class="bi-bag-check me-2"></i>Buy Now</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <button id="toggle-wishlist-btn" class="btn btn-light w-100 py-3 rounded-3 fw-bold" style="border: 1px solid var(--border-color);"><i class="bi-heart me-2"></i>Wishlist</button>
+                    </div>
+                </div>
+
+                <!-- Seller Details -->
+                <div class="glass-card p-4 mb-5" style="border: 1px solid var(--border-color); border-radius: 20px;">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-person-workspace text-primary me-2"></i>Seller Information</h5>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="fw-bold m-0" id="seller-name">Seller Name</h6>
+                            <small class="text-muted" id="seller-email">seller@mail.com</small>
+                        </div>
+                        <!-- WhatsApp button -->
+                        <a href="#" id="whatsapp-btn" target="_blank" class="btn btn-success rounded-pill px-4 d-flex align-items-center gap-2">
+                            <i class="bi bi-whatsapp"></i> Chat Seller
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Reviews Moderation section -->
+                <div class="mb-5">
+                    <h5 class="fw-bold mb-4"><i class="bi bi-chat-left-text me-2"></i>Buyer Reviews</h5>
+                    
+                    <div id="reviews-list-container" class="mb-4">
+                        <!-- Reviews list dynamic -->
+                    </div>
+
+                    <!-- Add Review Form -->
+                    <div class="glass-card p-4 d-none" id="add-review-container" style="border: 1px solid var(--border-color); border-radius: 20px;">
+                        <h6 class="fw-bold mb-3">Write a Review</h6>
+                        <form id="review-submit-form" onsubmit="submitReview(event)">
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label>
+                                <select class="form-select bg-transparent text-color" id="review-rating" required>
+                                    <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                                    <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                                    <option value="3">⭐⭐⭐ 3 Stars</option>
+                                    <option value="2">⭐⭐ 2 Stars</option>
+                                    <option value="1">⭐ 1 Star</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Comment</label>
+                                <textarea class="form-control bg-transparent text-color" id="review-comment" rows="3" placeholder="Tell us about the animal's health and purchase experience..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary-custom px-4 rounded-pill">Submit Review</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet Map JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Core App JS Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/chatbot.js"></script>
+
+    <!-- Details rendering script -->
+    <script>
+        let currentAnimalId = null;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            currentAnimalId = parseInt(params.get("id"));
+
+            if (!currentAnimalId) {
+                window.location.href = "animals.html";
+                return;
+            }
+
+            await loadAnimalDetails(currentAnimalId);
+
+            // Display review box if logged in
+            const token = localStorage.getItem("token");
+            if (token) {
+                document.getElementById("add-review-container").classList.remove("d-none");
+            }
+        });
+
+        async function loadAnimalDetails(id) {
+            const loading = document.getElementById("details-loading");
+            const content = document.getElementById("details-content");
+            
+            const data = await apiFetch(`animal.php?id=${id}`);
+            
+            if (data.status === "success") {
+                const animal = data.animal;
+                
+                // Set details
+                document.getElementById("detail-name").innerText = animal.name;
+                document.getElementById("detail-price").innerText = formatPrice(animal.price);
+                document.getElementById("detail-category-badge").innerText = animal.category_name;
+                
+                const statusBadge = document.getElementById("detail-status-badge");
+                statusBadge.innerText = animal.status.toUpperCase();
+                if (animal.status === 'available') {
+                    statusBadge.className = "badge bg-success px-3 py-2 rounded-pill";
+                } else if (animal.status === 'sold') {
+                    statusBadge.className = "badge bg-danger px-3 py-2 rounded-pill";
+                } else {
+                    statusBadge.className = "badge bg-warning px-3 py-2 rounded-pill";
+                }
+
+                document.getElementById("badge-breed").innerText = animal.breed;
+                document.getElementById("badge-location").innerText = animal.location;
+                document.getElementById("badge-age").innerText = `${animal.age_months} Months`;
+                document.getElementById("badge-weight").innerText = `${animal.weight_kg} Kg`;
+                document.getElementById("detail-description").innerText = animal.description || "No description provided.";
+                
+                // Seller details
+                document.getElementById("seller-name").innerText = animal.seller_name;
+                document.getElementById("seller-email").innerText = animal.seller_email;
+                
+                // WhatsApp Integration
+                const waText = encodeURIComponent(`Hi ${animal.seller_name}, I am interested in your listing '${animal.name}' (${animal.breed}) priced at ${formatPrice(animal.price)} on Animal Mart.`);
+                document.getElementById("whatsapp-btn").href = `https://wa.me/91${animal.seller_phone}?text=${waText}`;
+
+                // Image Carousel
+                const inner = document.getElementById("carousel-images-inner");
+                inner.innerHTML = "";
+                
+                const mainImgPath = animal.main_image.startsWith("animal_") ? `../backend/uploads/${animal.main_image}` : `https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=600`;
+                
+                // Main image slide
+                const mainItem = document.createElement("div");
+                mainItem.className = "carousel-item active";
+                mainItem.innerHTML = `<img src="${mainImgPath}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="${animal.name}">`;
+                inner.appendChild(mainItem);
+
+                // Additional images
+                if (animal.images && Array.isArray(animal.images)) {
+                    animal.images.forEach(img => {
+                        const path = img.startsWith("animal_") ? `../backend/uploads/${img}` : img;
+                        const item = document.createElement("div");
+                        item.className = "carousel-item";
+                        item.innerHTML = `<img src="${path}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="${animal.name}">`;
+                        inner.appendChild(item);
+                    });
+                }
+
+                // Buy & Cart buttons
+                document.getElementById("add-to-cart-btn").onclick = () => addToCart(animal.id);
+                document.getElementById("buy-now-btn").onclick = () => {
+                    addToCart(animal.id);
+                    window.location.href = "cart.html";
+                };
+                
+                // Wishlist setup
+                const wishBtn = document.getElementById("toggle-wishlist-btn");
+                wishBtn.onclick = async () => {
+                    const token = localStorage.getItem("token");
+                    if (!token) {
+                        showToast("Please login to manage wishlist.", "error");
+                        return;
+                    }
+                    const res = await apiFetch("wishlist.php", {
+                        method: "POST",
+                        body: JSON.stringify({ animal_id: animal.id })
+                    });
+                    if (res.status === "added") {
+                        showToast("Added to wishlist!", "success");
+                        wishBtn.innerHTML = `<i class="bi-heart-fill text-danger me-2"></i>Wishlist`;
+                    } else {
+                        showToast("Removed from wishlist.", "success");
+                        wishBtn.innerHTML = `<i class="bi-heart me-2"></i>Wishlist`;
+                    }
+                };
+
+                // Render reviews
+                renderReviewsList(animal.reviews);
+
+                // Leaflet Map Rendering
+                renderLocationMap(animal.location);
+
+                loading.classList.add("d-none");
+                content.classList.remove("d-none");
+            } else {
+                loading.innerHTML = `<div class="text-danger">Failed to fetch listing. It may have been deleted.</div>`;
+            }
+        }
+
+        function renderReviewsList(reviews) {
+            const container = document.getElementById("reviews-list-container");
+            container.innerHTML = "";
+            
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = `<p class="text-muted italic">No reviews submitted yet for this animal.</p>`;
+                return;
+            }
+
+            reviews.forEach(r => {
+                const stars = Array(5).fill(0).map((_, i) => 
+                    i < r.rating ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-muted"></i>'
+                ).join('');
+                
+                const card = document.createElement("div");
+                card.className = "glass-card p-3 mb-3";
+                card.style.border = "1px solid var(--border-color)";
+                card.style.borderRadius = "12px";
+                card.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="fw-bold m-0">${r.reviewer_name}</h6>
+                        <small class="text-muted" style="font-size: 0.8rem;">${new Date(r.created_at).toLocaleDateString()}</small>
+                    </div>
+                    <div class="mb-2" style="font-size: 0.8rem;">${stars}</div>
+                    <p class="m-0 text-muted" style="font-size: 0.92rem;">${r.comment}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderLocationMap(city) {
+            // Tamil Nadu Cities Coordinates Map for Leaflet
+            const coordinates = {
+                "chennai": [13.0827, 80.2707],
+                "coimbatore": [11.0168, 76.9558],
+                "madurai": [9.9252, 78.1198],
+                "salem": [11.6643, 78.1460],
+                "tiruchirappalli": [10.7905, 78.7047],
+                "trichy": [10.7905, 78.7047],
+                "ooty": [11.4102, 76.6950],
+                "erode": [11.3410, 77.7172],
+                "vellore": [12.9165, 79.1325]
+            };
+
+            const cityName = city.toLowerCase().trim();
+            const coord = coordinates[cityName] || [13.0827, 80.2707]; // Fallback to Chennai
+            
+            // Clear existing map instance if any (Leaflet details map wrapper)
+            const mapContainer = document.getElementById("map");
+            if (mapContainer._leaflet_id) {
+                mapContainer.innerHTML = "";
+            }
+
+            var map = L.map('map', { scrollWheelZoom: false }).setView(coord, 11);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker(coord).addTo(map)
+                .bindPopup(`<b>Listed in ${city}</b><br>Verifiable location nearby.`)
+                .openPopup();
+        }
+
+        async function submitReview(e) {
+            e.preventDefault();
+            const rating = document.getElementById("review-rating").value;
+            const comment = document.getElementById("review-comment").value;
+
+            const res = await apiFetch("review.php", {
+                method: "POST",
+                body: JSON.stringify({
+                    animal_id: currentAnimalId,
+                    rating: rating,
+                    comment: comment
+                })
+            });
+
+            if (res.status === "success") {
+                showToast("Review submitted successfully!", "success");
+                document.getElementById("review-submit-form").reset();
+                // Reload details
+                loadAnimalDetails(currentAnimalId);
+            } else {
+                showToast(res.message, "error");
+            }
+        }
+    </script>
+</body>
+</html>
