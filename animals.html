@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Animals - Admin | Animal Mart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <a class="sidebar-brand" href="dashboard.html">
+            <i class="bi bi-shop-window" style="font-size:1.8rem; color:#818cf8;"></i>
+            <h5>Animal Mart</h5>
+        </a>
+        <div class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <a class="sidebar-link" href="dashboard.html"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+            <a class="sidebar-link active" href="animals.html"><i class="bi bi-basket3-fill"></i> Animals</a>
+            <a class="sidebar-link" href="orders.html"><i class="bi bi-bag-check-fill"></i> Orders</a>
+            <div class="nav-section-label">Users</div>
+            <a class="sidebar-link" href="users.html"><i class="bi bi-people-fill"></i> Users</a>
+            <a class="sidebar-link" href="reviews.html"><i class="bi bi-chat-square-text-fill"></i> Reviews</a>
+            <div class="nav-section-label">System</div>
+            <a class="sidebar-link" href="../../frontend/index.html" target="_blank"><i class="bi bi-globe2"></i> View Site</a>
+            <a class="sidebar-link" href="#" onclick="adminLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+        <div class="admin-header">
+            <h4><i class="bi bi-basket3-fill me-2 text-primary"></i>Animal Listings Management</h4>
+            <input type="text" class="admin-search" id="search-animals" placeholder="Search listings..." oninput="filterTable()">
+        </div>
+
+        <div class="admin-content">
+            <div class="admin-table-wrap">
+                <div class="admin-table-header">
+                    <h5>All Listings (<span id="animal-count">0</span>)</h5>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="admin-table" id="animals-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Animal</th>
+                                <th>Category</th>
+                                <th>Breed</th>
+                                <th>Price</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="animals-tbody">
+                            <tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8;">Loading animals...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        let allAnimals = [];
+
+        document.addEventListener('DOMContentLoaded', loadAnimals);
+
+        async function loadAnimals() {
+            const res = await adminFetch('admin.php?action=animals');
+            const tbody = document.getElementById('animals-tbody');
+            if (res && res.status === 'success') {
+                allAnimals = res.animals;
+                document.getElementById('animal-count').innerText = allAnimals.length;
+                renderAnimalsTable(allAnimals);
+            } else {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:#ef4444;">Failed to load animals.</td></tr>`;
+            }
+        }
+
+        function renderAnimalsTable(animals) {
+            const tbody = document.getElementById('animals-tbody');
+            tbody.innerHTML = '';
+            if (animals.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8;">No listings found.</td></tr>`;
+                return;
+            }
+            animals.forEach(a => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${a.id}</td>
+                    <td><strong>${a.name}</strong></td>
+                    <td>${a.category_name || '—'}</td>
+                    <td>${a.breed}</td>
+                    <td>${adminFormatPrice(a.price)}</td>
+                    <td>${a.location}</td>
+                    <td><span class="badge-pill badge-${a.status}">${a.status.toUpperCase()}</span></td>
+                    <td>
+                        <button class="btn-action btn-delete" onclick="deleteAnimal(${a.id})"><i class="bi bi-trash"></i> Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function deleteAnimal(id) {
+            if (!confirm('Permanently delete this listing?')) return;
+            const res = await adminFetch('admin.php', {
+                method: 'POST',
+                body: JSON.stringify({ action: 'delete_animal', animal_id: id })
+            });
+            if (res && res.status === 'success') {
+                adminToast('Listing deleted successfully.', 'success');
+                loadAnimals();
+            } else {
+                adminToast(res?.message || 'Delete failed.', 'error');
+            }
+        }
+
+        function filterTable() {
+            const q = document.getElementById('search-animals').value.toLowerCase();
+            const filtered = allAnimals.filter(a =>
+                a.name.toLowerCase().includes(q) ||
+                a.breed.toLowerCase().includes(q) ||
+                a.location.toLowerCase().includes(q) ||
+                (a.category_name || '').toLowerCase().includes(q)
+            );
+            renderAnimalsTable(filtered);
+        }
+
+        function adminLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '../../frontend/login.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MURUGAN HENS FARM</title>
+    <meta name="description"
+        content="Animal Mart is a premium marketplace to buy and sell farm livestock and domestic pets online. Verified sellers, veterinary certified animals.">
+    <meta name="theme-color" content="#c2410c">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/192/dog.png">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="index.html">
+                <i class="bi bi-shop" style="font-size: 1.8rem;"></i>
+                <span>Murugan Hens Farm</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html" data-translate="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="animals.html" data-translate="nav-animals">Animals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-translate="nav-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-translate="nav-contact">Contact</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
+                                id="cart-badge">0</span>
+                        </a>
+                    </li>
+
+                    <!-- Language selector -->
+                    <li class="nav-item ms-2">
+                        <select class="form-select form-select-sm bg-transparent text-color border-secondary rounded-3"
+                            id="lang-selector" style="font-size: 0.85rem;">
+                            <option value="en">English</option>
+                            <option value="ta">தமிழ்</option>
+                        </select>
+                    </li>
+
+                    <!-- Theme Toggle button -->
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-link text-color" id="theme-toggle-btn" aria-label="Toggle Theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+
+                    <!-- Auth Links -->
+                    <li class="nav-item" id="nav-login-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="login.html"
+                            data-translate="nav-login">Login</a>
+                    </li>
+                    <li class="nav-item" id="nav-register-link">
+                        <a class="btn btn-primary-custom btn-sm rounded-pill px-3" href="register.html"
+                            data-translate="nav-register">Register</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-profile-link">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="profile.html"
+                            data-translate="nav-profile">Dashboard</a>
+                    </li>
+                    <li class="nav-item d-none" id="nav-logout-btn">
+                        <a class="btn btn-danger btn-sm rounded-pill px-3" href="#"
+                            data-translate="nav-logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner Section -->
+    <section class="hero-section">
+        <div class="container py-5">
+            <div class="row align-items-center justify-content-between g-5">
+                <div class="col-lg-6">
+                    <span class="badge bg-primary px-3 py-2 rounded-pill mb-3" style="font-weight: 500;"
+                        data-translate="hero-badge">✨ Healthy Hens • Fresh Eggs • Trusted Quality</span>
+                    <h1 class="display-4 fw-bold mb-4" data-translate="hero-title">Murugan Hens Farm</h1>
+                    <p class="lead text-muted mb-4" data-translate="hero-subtitle">
+                        Welcome to Murugan Hens Farm, where quality poultry farming meets dedication and care. We
+                        specialize in raising healthy hens and producing fresh, nutritious eggs while maintaining the
+                        highest standards of hygiene and animal welfare.
+                    </p>
+
+                    <!-- Features List -->
+                    <ul class="list-unstyled mb-4 d-flex flex-column gap-2 text-muted">
+                        <li><i class="bi bi-patch-check-fill text-primary me-2"></i> <span
+                                data-translate="hero-feat-1">Farm Fresh Eggs Daily</span></li>
+                        <li><i class="bi bi-patch-check-fill text-primary me-2"></i> <span
+                                data-translate="hero-feat-2">Healthy & Well-Cared Hens</span></li>
+                        <li><i class="bi bi-patch-check-fill text-primary me-2"></i> <span
+                                data-translate="hero-feat-3">Hygienic Farming Practices</span></li>
+                        <li><i class="bi bi-patch-check-fill text-primary me-2"></i> <span
+                                data-translate="hero-feat-4">Reliable Supply for Retail & Bulk Orders</span></li>
+                    </ul>
+
+                    <!-- Buttons -->
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="contact.html" class="btn btn-primary-custom px-4 py-2 rounded-pill"
+                            data-translate="hero-btn-touch">Get in Touch</a>
+                        <a href="about.html" class="btn btn-outline-primary px-4 py-2 rounded-pill"
+                            data-translate="hero-btn-learn">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <video autoplay muted loop playsinline
+                        class="img-fluid rounded-4 shadow-lg border border-2 border-light-subtle"
+                        style="max-height: 400px; width: 100%; object-fit: cover;">
+                        <source src="../Cow,_goat,_chicken_in_field_202606082023.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="container py-5 mt-4">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" data-translate="category-title">Browse by Category</h2>
+            <div class="mx-auto" style="width: 50px; height: 3px; background-color: var(--primary-color);"></div>
+        </div>
+
+        <div class="row justify-content-center row-cols-2 row-cols-sm-3 row-cols-md-5 g-4" id="categories-container">
+            <!-- Loading indicator -->
+            <div class="text-center w-100 py-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading categories...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Animals Section -->
+    <section class="bg-light py-5" style="background-color: rgba(241, 245, 249, 0.4) !important;">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold" data-translate="featured-title">Featured Listings</h2>
+                <p class="text-muted" data-translate="featured-subtitle">Top rated listings verified by our
+                    veterinarians</p>
+                <div class="mx-auto" style="width: 50px; height: 3px; background-color: var(--primary-color);"></div>
+            </div>
+
+            <div class="row g-4" id="featured-container">
+                <!-- Skeleton cards by default -->
+                <div class="col-md-4">
+                    <div class="glass-card skeleton-img skeleton"></div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card skeleton-img skeleton"></div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card skeleton-img skeleton"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="container py-5 my-4" id="stats-section">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" data-translate="stats-title">Our Achievements</h2>
+            <div class="mx-auto" style="width: 50px; height: 3px; background-color: var(--primary-color);"></div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="glass-card stat-card">
+                    <div class="stat-number" data-target="15000" data-plus="true">0+</div>
+                    <h5 class="fw-semibold text-muted" data-translate="stats-users">Happy Users</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card stat-card">
+                    <div class="stat-number" data-target="8200" data-plus="true">0+</div>
+                    <h5 class="fw-semibold text-muted" data-translate="stats-animals">Animals Sold</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card stat-card">
+                    <div class="stat-number" data-target="950" data-plus="true">0+</div>
+                    <h5 class="fw-semibold text-muted" data-translate="stats-sellers">Verified Sellers</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="bg-light py-5" style="background-color: rgba(241, 245, 249, 0.4) !important;">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold" data-translate="faq-title">Frequently Asked Questions</h2>
+                <div class="mx-auto" style="width: 50px; height: 3px; background-color: var(--primary-color);"></div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion accordion-flush" id="faqAccordion">
+                        <div class="accordion-item glass-card mb-3 p-2"
+                            style="border: 1px solid var(--border-color); border-radius: 12px;">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button bg-transparent fw-semibold text-color" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne" data-translate="faq-q1">
+                                    How do I purchase an animal on Animal Mart?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted" data-translate="faq-a1">
+                                    Simply browse listings, add your chosen animals to the cart, fill in your shipping
+                                    details, and complete the secure payment process. The seller will coordinate
+                                    shipping.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item glass-card mb-3 p-2"
+                            style="border: 1px solid var(--border-color); border-radius: 12px;">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold text-color"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo" data-translate="faq-q2">
+                                    Are the animals health-certified?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted" data-translate="faq-a2">
+                                    Yes, we encourage sellers to upload veterinary certificate documents. Listings
+                                    certified by our partners are tagged with a veterinary verified badge.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item glass-card mb-3 p-2"
+                            style="border: 1px solid var(--border-color); border-radius: 12px;">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed bg-transparent fw-semibold text-color"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                    aria-expanded="false" aria-controls="collapseThree" data-translate="faq-q3">
+                                    Can I sell my own farm livestock here?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted" data-translate="faq-a3">
+                                    Absolutely! Select 'Seller' or 'Both' role during registration, and list your
+                                    animals from your personal profile dashboard instantly.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="container py-5 my-4">
+        <div class="glass-card p-5 text-center"
+            style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(16, 185, 129, 0.05)); border: 1px solid var(--border-color); border-radius: 30px;">
+            <i class="bi bi-envelope-paper-fill text-primary display-5 mb-3"></i>
+            <h2 class="fw-bold mb-2" data-translate="newsletter-title">Subscribe to Our Newsletter</h2>
+            <p class="text-muted mb-4 mx-auto" style="max-width: 550px;" data-translate="newsletter-subtitle">
+                Receive farm tips, veterinary advice, and the latest marketplace listing updates directly in your inbox.
+            </p>
+            <form onsubmit="event.preventDefault(); showToast('Subscribed successfully!', 'success'); this.reset();"
+                class="row justify-content-center g-3">
+                <div class="col-md-6 col-lg-5">
+                    <input type="email" class="form-control rounded-pill px-4 py-2 border-secondary"
+                        placeholder="Enter your email address" data-translate="newsletter-placeholder" required>
+                </div>
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-primary-custom rounded-pill px-4 py-2 w-100"
+                        data-translate="newsletter-btn">Subscribe</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <a class="d-flex align-items-center gap-2 fw-bold text-white text-decoration-none mb-3"
+                        href="index.html">
+                        <i class="bi bi-shop" style="font-size: 1.5rem;"></i>
+                        <span class="fs-4">Animal Mart</span>
+                    </a>
+                    <p class="text-white-50" data-translate="footer-about">
+                        Animal Mart is a premium secure e-commerce gateway connecting buyers and verified
+                        farmers/breeders for cattle, livestock, and domestic pets.
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-3">
+                    <h5 class="fw-bold mb-3" data-translate="footer-links">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html"
+                                class="text-white-50 text-decoration-none hover-white">Home</a></li>
+                        <li class="mb-2"><a href="animals.html" class="text-white-50 text-decoration-none">Animals</a>
+                        </li>
+                        <li class="mb-2"><a href="about.html" class="text-white-50 text-decoration-none">About Us</a>
+                        </li>
+                        <li class="mb-2"><a href="contact.html" class="text-white-50 text-decoration-none">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <h5 class="fw-bold mb-3" data-translate="footer-links">Categories</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li>Cow | Goat | Sheep</li>
+                        <li>Chicken | Horse | Dog</li>
+                        <li>Cat | Rabbit | Fish</li>
+                        <li>Birds</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-12">
+                    <h5 class="fw-bold mb-3" data-translate="footer-contact">Contact Us</h5>
+                    <p class="text-white-50"><i class="bi bi-geo-alt-fill me-2"></i> Chennai, Tamil Nadu, India</p>
+                    <p class="text-white-50"><i class="bi bi-telephone-fill me-2"></i> +91 98765 43210</p>
+                    <p class="text-white-50"><i class="bi bi-envelope-fill me-2"></i> support@animalmart.com</p>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="text-center text-white-50">
+                <small>© <span id="year">2026</span> Animal Mart. <span data-translate="footer-rights">All Rights
+                        Reserved.</span></small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core App JS Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/chatbot.js"></script>
+
+    <!-- Homepage specific rendering logic -->
+    <script>
+        document.getElementById("year").innerText = new Date().getFullYear();
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Load Categories
+            loadHomeCategories();
+
+            // Load Featured Animals
+            loadFeaturedAnimals();
+        });
+
+        async function loadHomeCategories() {
+            const container = document.getElementById("categories-container");
+            const data = await apiFetch("categories.php");
+
+            if (data.status === "success") {
+                container.innerHTML = "";
+
+                // Map of slugs to category emoji icons for a premium UI look
+                const categoryEmojis = {
+                    cow: "🐄",
+                    goat: "🐐",
+                    sheep: "🐑",
+                    chicken: "🐓",
+                    horse: "🐎",
+                    dog: "🐕",
+                    cat: "🐈",
+                    rabbit: "🐇",
+                    fish: "🐠",
+                    birds: "🦜"
+                };
+
+                data.categories.forEach(cat => {
+                    const emoji = categoryEmojis[cat.slug] || "🐾";
+                    const col = document.createElement("div");
+                    col.className = "col";
+                    col.innerHTML = `
+                        <a href="animals.html?category=${cat.id}" class="category-circle">
+                            <div class="category-icon-wrapper">
+                                ${emoji}
+                            </div>
+                            <span class="fw-semibold">${cat.name}</span>
+                            <small class="text-muted">(${cat.animal_count} listings)</small>
+                        </a>
+                    `;
+                    container.appendChild(col);
+                });
+            } else {
+                container.innerHTML = `<div class="text-danger w-100 text-center">Failed to load categories.</div>`;
+            }
+        }
+
+        async function loadFeaturedAnimals() {
+            const container = document.getElementById("featured-container");
+            const data = await apiFetch("animals.php?featured=true");
+
+            if (data.status === "success") {
+                container.innerHTML = "";
+                if (data.animals.length === 0) {
+                    container.innerHTML = `<div class="col-12 text-center text-muted">No animals featured currently.</div>`;
+                    return;
+                }
+
+                data.animals.forEach(animal => {
+                    const ratingStars = Array(5).fill(0).map((_, i) =>
+                        i < Math.round(animal.rating) ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-muted"></i>'
+                    ).join('');
+
+                    const imgPath = animal.main_image.startsWith("animal_") ? `../backend/uploads/${animal.main_image}` : `https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=400`; // Fallback placeholder
+
+                    const col = document.createElement("div");
+                    col.className = "col-md-6 col-lg-4";
+                    col.innerHTML = `
+                        <div class="glass-card animal-card h-100">
+                            <div class="animal-image-wrapper">
+                                <img src="${imgPath}" alt="${animal.name}">
+                                <span class="animal-badge bg-primary text-white">${animal.category_name}</span>
+                                <button class="wishlist-btn" onclick="event.preventDefault(); toggleFav(${animal.id})">
+                                    <i class="bi bi-heart-fill"></i>
+                                </button>
+                            </div>
+                            <div class="p-4 d-flex flex-column justify-content-between" style="min-height: 220px;">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="fw-bold m-0">${animal.name}</h5>
+                                        <span class="fs-5 fw-bold text-primary">${formatPrice(animal.price)}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <div style="font-size: 0.85rem;">${ratingStars}</div>
+                                        <small class="text-muted">(${parseFloat(animal.rating).toFixed(1)})</small>
+                                    </div>
+                                    <div class="row g-2 mb-3" style="font-size: 0.9rem;">
+                                        <div class="col-6 text-muted"><i class="bi bi-tag-fill me-1 text-primary"></i> ${animal.breed}</div>
+                                        <div class="col-6 text-muted"><i class="bi bi-geo-alt-fill me-1 text-primary"></i> ${animal.location}</div>
+                                        <div class="col-6 text-muted"><i class="bi bi-calendar3 me-1 text-primary"></i> ${animal.age_months} Months</div>
+                                        <div class="col-6 text-muted"><i class="bi bi-speedometer2 me-1 text-primary"></i> ${animal.weight_kg} Kg</div>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <a href="animal-details.html?id=${animal.id}" class="btn btn-outline-primary btn-sm w-100 rounded-3">View Details</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <button onclick="addToCart(${animal.id})" class="btn btn-primary-custom btn-sm w-100 rounded-3">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(col);
+                });
+            } else {
+                container.innerHTML = `<div class="text-danger w-100 text-center">Failed to load featured animals.</div>`;
+            }
+        }
+
+        async function toggleFav(animalId) {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                showToast("Please login to manage wishlist.", "error");
+                return;
+            }
+            const res = await apiFetch("wishlist.php", {
+                method: "POST",
+                body: JSON.stringify({ animal_id: animalId })
+            });
+            if (res.status === "added") {
+                showToast("Added to wishlist!", "success");
+            } else if (res.status === "removed") {
+                showToast("Removed from wishlist.", "success");
+            }
+        }
+    </script>
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/Project/frontend/service-worker.js')
+                    .then(reg => console.log('[SW] Registered:', reg.scope))
+                    .catch(err => console.warn('[SW] Registration failed:', err));
+            });
+        }
+    </script>
+</body>
+
+</html>

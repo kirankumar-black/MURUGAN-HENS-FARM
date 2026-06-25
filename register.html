@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Animal Mart</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="index.html">
+                <i class="bi bi-shop" style="font-size: 1.8rem;"></i>
+                <span>Animal Mart</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-translate="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="animals.html" data-translate="nav-animals">Animals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-translate="nav-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-translate="nav-contact">Contact</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <select class="form-select form-select-sm bg-transparent text-color border-secondary rounded-3" id="lang-selector" style="font-size: 0.85rem;">
+                            <option value="en">English</option>
+                            <option value="ta">தமிழ்</option>
+                        </select>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-link text-color" id="theme-toggle-btn" aria-label="Toggle Theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Box -->
+    <div class="container py-5 my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="glass-card p-5" style="border: 1px solid var(--border-color); border-radius: 24px;">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-plus text-primary display-4 mb-2 d-block"></i>
+                        <h2 class="fw-bold">Create Account</h2>
+                        <p class="text-muted">Register to buy or sell animals on our platform</p>
+                    </div>
+
+                    <form id="register-form" onsubmit="handleRegister(event)">
+                        <!-- Name Input -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Full Name</label>
+                            <input type="text" id="reg-name" class="form-control bg-transparent border-secondary py-2 text-color" placeholder="Kiran Kumar" required>
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email Address</label>
+                            <input type="email" id="reg-email" class="form-control bg-transparent border-secondary py-2 text-color" placeholder="kiran@gmail.com" required>
+                        </div>
+
+                        <div class="row">
+                            <!-- Password Input -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Password</label>
+                                <input type="password" id="reg-password" class="form-control bg-transparent border-secondary py-2 text-color" placeholder="Min 6 characters" required>
+                            </div>
+                            <!-- Phone Input -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Phone Number</label>
+                                <input type="tel" id="reg-phone" class="form-control bg-transparent border-secondary py-2 text-color" placeholder="e.g. 9876543210" required>
+                            </div>
+                        </div>
+
+                        <!-- Account Role select -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">I want to...</label>
+                            <select id="reg-role" class="form-select bg-transparent border-secondary py-2 text-color">
+                                <option value="buyer">Buy Animals</option>
+                                <option value="seller">Sell / List Animals</option>
+                                <option value="both">Both (Buy & Sell)</option>
+                            </select>
+                        </div>
+
+                        <!-- Address Input -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Address / Farm Location</label>
+                            <textarea id="reg-address" class="form-control bg-transparent border-secondary py-2 text-color" rows="3" placeholder="e.g. 123 Farm Street, Madurai" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2.5 rounded-3 fw-semibold">Sign Up</button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted m-0">Already have an account? <a href="login.html" class="text-primary text-decoration-none fw-semibold">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core App JS Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/chatbot.js"></script>
+
+    <!-- Register Handler Script -->
+    <script>
+        async function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById("reg-name").value;
+            const email = document.getElementById("reg-email").value;
+            const password = document.getElementById("reg-password").value;
+            const phone = document.getElementById("reg-phone").value;
+            const role = document.getElementById("reg-role").value;
+            const address = document.getElementById("reg-address").value;
+
+            if (password.length < 6) {
+                showToast("Password must be at least 6 characters.", "error");
+                return;
+            }
+
+            const res = await apiFetch("register.php", {
+                method: "POST",
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password,
+                    phone,
+                    role,
+                    address
+                })
+            });
+
+            if (res.status === "success") {
+                showToast("Registration successful! Please login.", "success");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1500);
+            } else {
+                showToast(res.message, "error");
+            }
+        }
+    </script>
+</body>
+</html>
